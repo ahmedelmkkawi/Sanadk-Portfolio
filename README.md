@@ -1,0 +1,65 @@
+# Sanadak Portfolio - Premium Software Agency Full-Stack Application
+
+This project is a premium, modern, and elegant portfolio management system for a software team. It's built with Angular 18+ (Standalone Architecture), Tailwind CSS, NestJS, and MongoDB.
+
+## 🌟 Tech Stack
+
+### Frontend
+- **Framework:** Angular 18+ (Standalone Architecture, Zoneless ready)
+- **Styling:** Tailwind CSS (Custom Color System, Dark Mode, Animations)
+- **State Management:** Angular Signals & RxJS
+- **Routing:** Angular Router (Lazy Loaded)
+- **UI UX:** Glassmorphism, Smooth transitions, Custom Typography (Outfit & Inter)
+
+### Backend
+- **Framework:** NestJS
+- **Database:** MongoDB with Mongoose
+- **Authentication:** JWT & Passport.js
+- **File Uploads:** Cloudinary (via Multer)
+
+---
+
+## 📂 Project Structure
+
+### Frontend (`/frontend`)
+The frontend is architected for scalability:
+- `src/app/pages/` - Contains lazy-loaded route components (`home`, `projects`, `team`, `dashboard`).
+- `src/app/components/` - Reusable UI components (buttons, cards, modals).
+- `src/app/services/` - Angular services for API communication.
+- `src/app/models/` - TypeScript interfaces matching backend DTOs.
+- `src/styles.css` - Global Tailwind layers and custom CSS classes.
+
+### Backend (`/backend`)
+The backend follows Domain-Driven Design principles:
+- `src/schemas/` - Mongoose schemas (`project.schema.ts`, `team-member.schema.ts`, `admin.schema.ts`).
+- `src/modules/` - Feature modules (Projects, Team, Auth).
+- `src/guards/` - JWT Authentication guards.
+- `src/dtos/` - Data Transfer Objects for validation.
+
+---
+
+## 🎨 UI/UX Design System
+- **Primary Colors:** Custom elegant reds (`#8B1A1A`, `#6B0F0F`)
+- **Accent Colors:** Luxury Golds (`#C9A84C`, `#D4A574`)
+- **Typography:** Outfit (Headings) and Inter (Body)
+- **Features:** Dark mode toggle, Glassmorphism navbar, Soft glows, Animated gradients.
+
+---
+
+## 🚀 How to Run Locally
+
+### 1. Backend Setup
+```bash
+cd backend
+npm install
+# Create a .env file with MONGODB_URI, JWT_SECRET, CLOUDINARY credentials
+npm run start:dev
+```
+
+### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm start
+```
+*The Angular app will run on `http://localhost:4200` with the premium UI showcasing the Hero section and Featured Projects.*

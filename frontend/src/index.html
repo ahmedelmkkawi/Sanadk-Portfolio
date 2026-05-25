@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sanadak Portfolio</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* ============ LOADER ============ */
+    #app-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      background: #0d0404;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(107,15,15,0.35) 0%, transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #app-loader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Outer glow ring */
+    .loader-ring-outer {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-ring-outer::before,
+    .loader-ring-outer::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+    }
+    /* Spinning accent ring */
+    .loader-ring-outer::before {
+      inset: 0;
+      border: 2.5px solid transparent;
+      border-top-color: #C9A84C;
+      border-right-color: #C9A84C;
+      border-radius: 50%;
+      animation: spin 1.2s cubic-bezier(0.6,0.2,0.4,0.8) infinite;
+    }
+    /* Pulsing crimson glow ring */
+    .loader-ring-outer::after {
+      inset: 10px;
+      border: 1.5px solid rgba(107,15,15,0.6);
+      border-radius: 50%;
+      animation: pulse-ring 2s ease-in-out infinite;
+    }
+
+    /* Logo container */
+    .loader-logo-wrap {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: logo-pulse 2s ease-in-out infinite;
+      box-shadow: 0 0 40px rgba(107,15,15,0.5), inset 0 0 20px rgba(0,0,0,0.3);
+    }
+    .loader-logo-wrap img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      filter: brightness(1.15) drop-shadow(0 0 8px rgba(201,168,76,0.4));
+    }
+
+    /* Brand label */
+    .loader-brand {
+      margin-top: 28px;
+      font-family: 'Outfit', 'Segoe UI', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+    }
+    .loader-brand span {
+      color: #C9A84C;
+    }
+
+    /* Animated progress bar */
+    .loader-bar-track {
+      margin-top: 18px;
+      width: 120px;
+      height: 2px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6b0f0f, #C9A84C, #6b0f0f);
+      background-size: 200%;
+      border-radius: 999px;
+      animation: shimmer 1.8s ease-in-out infinite;
+    }
+
+    /* Dot row */
+    .loader-dots {
+      display: flex;
+      gap: 6px;
+      margin-top: 20px;
+    }
+    .loader-dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #C9A84C;
+      opacity: 0.3;
+      animation: dot-bounce 1.4s ease-in-out infinite;
+    }
+    .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    /* Keyframes */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.04); }
+    }
+    @keyframes logo-pulse {
+      0%, 100% { box-shadow: 0 0 40px rgba(107,15,15,0.5), inset 0 0 20px rgba(0,0,0,0.3); }
+      50% { box-shadow: 0 0 60px rgba(107,15,15,0.8), 0 0 20px rgba(201,168,76,0.15), inset 0 0 20px rgba(0,0,0,0.3); }
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+    @keyframes dot-bounce {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-4px); }
+    }
+  </style>
+</head>
+<body>
+  <div id="app-loader">
+    <div class="loader-ring-outer">
+      <div class="loader-logo-wrap">
+        <img src="/logo.png" alt="Sanadak" />
+      </div>
+    </div>
+    <div class="loader-brand">Sanad<span>Hub</span></div>
+    <div class="loader-bar-track">
+      <div class="loader-bar-fill"></div>
+    </div>
+    <div class="loader-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <app-root></app-root>
+
+  <script>
+    // Hide the loader once Angular has bootstrapped and rendered the app
+    (function() {
+      var observer = new MutationObserver(function() {
+        var root = document.querySelector('app-root');
+        if (root && root.children.length > 0) {
+          var loader = document.getElementById('app-loader');
+          if (loader) {
+            loader.classList.add('fade-out');
+            setTimeout(function() { loader.remove(); }, 600);
+          }
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.querySelector('app-root') || document.body, {
+        childList: true, subtree: true
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<div class="min-h-screen flex flex-col transition-colors duration-300">
+  <header class="sticky top-0 z-10 glass shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <div class="flex items-center gap-3 cursor-pointer">
+          <div class="nav-logo-wrap">
+            <img src="/logo.png" alt="SanadHub Admin" class="nav-logo-img" />
+          </div>
+          <div class="text-white text-lg font-semibold">Sanadak Admin</div>
+        </div>
+        <a href="http://localhost:4200" target="_blank" rel="noopener" class="btn-outline text-sm px-4 py-2">User Site</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <router-outlet></router-outlet>
+  </main>
+</div>
