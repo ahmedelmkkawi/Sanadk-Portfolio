@@ -10,10 +10,14 @@ import { Admin, AdminSchema } from './schemas/admin.schema';
 import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
 import { TeamMembersModule } from './team-members/team-members.module';
+import { mongooseServerlessOptions } from './mongoose.config';
+
+const mongoUri =
+  process.env.MONGODB_URI?.trim() || 'mongodb://localhost:27017/sanadak-portfolio';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/sanadak-portfolio'),
+    MongooseModule.forRoot(mongoUri, mongooseServerlessOptions),
     MongooseModule.forFeature([
       { name: Project.name, schema: ProjectSchema },
       { name: TeamMember.name, schema: TeamMemberSchema },

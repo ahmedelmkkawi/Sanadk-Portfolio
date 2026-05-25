@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException, OnModuleInit } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { Admin, AdminDocument } from '../schemas/admin.schema';
 import { LoginDto } from './dto/login.dto';
 
@@ -15,14 +15,18 @@ export class AuthService implements OnModuleInit {
 
   // Automatically seed an admin if none exists in the DB
   async onModuleInit() {
-    const adminCount = await this.adminModel.countDocuments();
-    if (adminCount === 0) {
-      const hashedPassword = await bcrypt.hash('admin123', 10);
-      await this.adminModel.create({
-        email: 'admin@sanadak.com',
-        password: hashedPassword,
-      });
-      console.log('🌱 Seeded default admin: admin@sanadak.com / admin123');
+    try {
+      const adminCount = await this.adminModel.countDocuments();
+      if (adminCount === 0) {
+        const hashedPassword = await bcrypt.hash('admin123', 10);
+        await this.adminModel.create({
+          email: 'admin@sanadak.com',
+          password: hashedPassword,
+        });
+        console.log('🌱 Seeded default admin: admin@sanadak.com / admin123');
+      }
+    } catch (error) {
+      console.error('Admin seed skipped (database not ready):', error);
     }
   }
 
