@@ -1,65 +1,70 @@
-# Sanadak Portfolio - Premium Software Agency Full-Stack Application
+# Frontend
 
-This project is a premium, modern, and elegant portfolio management system for a software team. It's built with Angular 18+ (Standalone Architecture), Tailwind CSS, NestJS, and MongoDB.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
 
-## 🌟 Tech Stack
+## Development server
 
-### Frontend
-- **Framework:** Angular 18+ (Standalone Architecture, Zoneless ready)
-- **Styling:** Tailwind CSS (Custom Color System, Dark Mode, Animations)
-- **State Management:** Angular Signals & RxJS
-- **Routing:** Angular Router (Lazy Loaded)
-- **UI UX:** Glassmorphism, Smooth transitions, Custom Typography (Outfit & Inter)
+To start the user website, run:
 
-### Backend
-- **Framework:** NestJS
-- **Database:** MongoDB with Mongoose
-- **Authentication:** JWT & Passport.js
-- **File Uploads:** Cloudinary (via Multer)
-
----
-
-## 📂 Project Structure
-
-### Frontend (`/frontend`)
-The frontend is architected for scalability:
-- `src/app/pages/` - Contains lazy-loaded route components (`home`, `projects`, `team`, `dashboard`).
-- `src/app/components/` - Reusable UI components (buttons, cards, modals).
-- `src/app/services/` - Angular services for API communication.
-- `src/app/models/` - TypeScript interfaces matching backend DTOs.
-- `src/styles.css` - Global Tailwind layers and custom CSS classes.
-
-### Backend (`/backend`)
-The backend follows Domain-Driven Design principles:
-- `src/schemas/` - Mongoose schemas (`project.schema.ts`, `team-member.schema.ts`, `admin.schema.ts`).
-- `src/modules/` - Feature modules (Projects, Team, Auth).
-- `src/guards/` - JWT Authentication guards.
-- `src/dtos/` - Data Transfer Objects for validation.
-
----
-
-## 🎨 UI/UX Design System
-- **Primary Colors:** Custom elegant reds (`#8B1A1A`, `#6B0F0F`)
-- **Accent Colors:** Luxury Golds (`#C9A84C`, `#D4A574`)
-- **Typography:** Outfit (Headings) and Inter (Body)
-- **Features:** Dark mode toggle, Glassmorphism navbar, Soft glows, Animated gradients.
-
----
-
-## 🚀 How to Run Locally
-
-### 1. Backend Setup
 ```bash
-cd backend
-npm install
-# Create a .env file with MONGODB_URI, JWT_SECRET, CLOUDINARY credentials
-npm run start:dev
+npm run start:user
 ```
 
-### 2. Frontend Setup
+To start the admin dashboard website, run:
+
 ```bash
-cd frontend
-npm install
-npm start
+npm run start:admin
 ```
-*The Angular app will run on `http://localhost:4200` with the premium UI showcasing the Hero section and Featured Projects.*
+
+Once the servers are running, open your browser and navigate to:
+
+- User app: `http://localhost:4200/`
+- Admin app: `http://localhost:4201/`
+
+The applications will automatically reload whenever you modify source files.
+
+## Code scaffolding
+
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+
+```bash
+ng generate component component-name
+```
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
