@@ -6,7 +6,7 @@
     "start": "ng serve",
     "start:user": "ng serve frontend --configuration development",
     "start:admin": "ng serve admin --configuration development --port 4201",
-    "build": "ng build",
+    "build": "npm run build:admin",
     "build:user": "ng build frontend --configuration production",
     "build:admin": "ng build admin --configuration production",
     "watch": "ng build --watch --configuration development",
