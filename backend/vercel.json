@@ -3,11 +3,5 @@
   "version": 2,
   "installCommand": "npm install",
   "buildCommand": "npm run build",
-  "functions": {
-    "dist/api/index.js": {
-      "maxDuration": 30,
-      "includeFiles": "dist/**"
-    }
-  },
-  "routes": [{ "src": "/(.*)", "dest": "dist/api/index.js" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }
