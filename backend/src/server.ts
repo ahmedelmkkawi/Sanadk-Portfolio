@@ -11,10 +11,11 @@ async function bootstrap(): Promise<void> {
   await seedAdmin();
 
   const app = createApp();
-  const port = process.env.PORT || 3000;
+  const port = Number(process.env.PORT) || 3000;
+  const host = process.env.HOST || '0.0.0.0';
 
-  app.listen(port, () => {
-    console.log(`Sanadak Portfolio API running on: http://localhost:${port}/api`);
+  app.listen(port, host, () => {
+    console.log(`Sanadak Portfolio API running on port ${port} (/api)`);
   });
 }
 
