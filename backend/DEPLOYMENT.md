@@ -1,12 +1,12 @@
 # Sanadak Portfolio - Backend Deployment Guide
 
-This guide details step-by-step procedures for building and deploying the NestJS backend application of the Sanadak Portfolio project to production.
+This guide details step-by-step procedures for building and deploying the Express backend application of the Sanadak Portfolio project to production.
 
 ---
 
 ## 🛠️ Phase 1: Building the Backend Locally
 
-Before deploying, ensure that the application compiles without errors. The compilation process transpiles TypeScript (`src/**/*.ts`) into clean, production-grade JavaScript (`dist/**/*.js`).
+Before deploying, ensure that the application compiles without errors. The build transpiles TypeScript (`src/**/*.ts`) into JavaScript (`dist/**/*.js`).
 
 ### Build Steps:
 1. Navigate to the backend directory:

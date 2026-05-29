@@ -11,8 +11,8 @@ import { AuthService } from '@shared/services/auth.service';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  email = signal<string>('admin@sanadak.com');
-  password = signal<string>('admin123');
+  email = signal<string>('');
+  password = signal<string>('');
   error = signal<string | null>(null);
   loading = signal<boolean>(false);
 

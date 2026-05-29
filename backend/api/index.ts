@@ -1,39 +1,33 @@
-import 'reflect-metadata';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { AppModule } from '../src/app.module';
-import { configureApp } from '../src/configure-app';
+import { createApp } from '../src/app';
+import { connectDatabase } from '../src/config/database';
+import { seedAdmin } from '../src/services/auth.service';
 
-const expressApp = express();
-let bootstrapPromise: Promise<void> | null = null;
+let readyPromise: Promise<ReturnType<typeof createApp>> | null = null;
 
-async function bootstrap(): Promise<void> {
+async function bootstrap(): Promise<ReturnType<typeof createApp>> {
   if (!process.env.MONGODB_URI) {
     throw new Error(
       'MONGODB_URI is not set. Add it in Vercel → Project → Settings → Environment Variables.',
     );
   }
 
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp), {
-    logger: ['error', 'warn'],
-  });
-  configureApp(app);
-  await app.init();
+  await connectDatabase();
+  await seedAdmin();
+  return createApp();
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    if (!bootstrapPromise) {
-      bootstrapPromise = bootstrap();
+    if (!readyPromise) {
+      readyPromise = bootstrap();
     }
-    await bootstrapPromise;
-    return expressApp(req, res);
+    const app = await readyPromise;
+    return app(req, res);
   } catch (error) {
     console.error('Serverless function error:', error);
     const detail = error instanceof Error ? error.message : String(error);

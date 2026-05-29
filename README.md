@@ -1,6 +1,6 @@
 # Sanadak Portfolio - Premium Software Agency Full-Stack Application
 
-This project is a premium, modern, and elegant portfolio management system for a software team. It's built with Angular 18+ (Standalone Architecture), Tailwind CSS, NestJS, and MongoDB.
+This project is a premium, modern, and elegant portfolio management system for a software team. It's built with Angular 18+ (Standalone Architecture), Tailwind CSS, Node.js (Express), and MongoDB.
 
 ## 🌟 Tech Stack
 
@@ -12,9 +12,9 @@ This project is a premium, modern, and elegant portfolio management system for a
 - **UI UX:** Glassmorphism, Smooth transitions, Custom Typography (Outfit & Inter)
 
 ### Backend
-- **Framework:** NestJS
+- **Runtime:** Node.js with Express
 - **Database:** MongoDB with Mongoose
-- **Authentication:** JWT & Passport.js
+- **Authentication:** JWT (jsonwebtoken)
 - **File Uploads:** Cloudinary (via Multer)
 
 ---
@@ -30,11 +30,11 @@ The frontend is architected for scalability:
 - `src/styles.css` - Global Tailwind layers and custom CSS classes.
 
 ### Backend (`/backend`)
-The backend follows Domain-Driven Design principles:
-- `src/schemas/` - Mongoose schemas (`project.schema.ts`, `team-member.schema.ts`, `admin.schema.ts`).
-- `src/modules/` - Feature modules (Projects, Team, Auth).
-- `src/guards/` - JWT Authentication guards.
-- `src/dtos/` - Data Transfer Objects for validation.
+The backend is a modular Express API:
+- `src/models/` - Mongoose models (projects, team members, admin).
+- `src/routes/` - HTTP route handlers (projects, team-members, auth).
+- `src/services/` - Business logic and database operations.
+- `src/middleware/` - JWT auth and error handling.
 
 ---
 
