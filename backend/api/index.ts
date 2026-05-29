@@ -3,14 +3,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { createApp } from '../src/app';
-import { connectDatabase } from '../src/config/database';
-import { seedAdmin } from '../src/services/auth.service';
+import { createApp } from '../dist/app';
+import { connectDatabase } from '../dist/config/database';
+import { seedAdmin } from '../dist/services/auth.service';
 
 let readyPromise: Promise<ReturnType<typeof createApp>> | null = null;
 
 async function bootstrap(): Promise<ReturnType<typeof createApp>> {
-  if (!process.env.MONGODB_URI) {
+  if (!process.env.MONGODB_URI?.trim()) {
     throw new Error(
       'MONGODB_URI is not set. Add it in Vercel → Project → Settings → Environment Variables.',
     );
@@ -29,6 +29,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const app = await readyPromise;
     return app(req, res);
   } catch (error) {
+    readyPromise = null;
     console.error('Serverless function error:', error);
     const detail = error instanceof Error ? error.message : String(error);
     return res.status(500).json({

@@ -20,6 +20,10 @@ export function createApp(): express.Application {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  app.get('/', (_req, res) => {
+    res.redirect(302, '/api');
+  });
+
   app.use('/api', routes);
 
   app.use(errorHandler);
