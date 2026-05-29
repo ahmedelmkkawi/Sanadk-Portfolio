@@ -148,7 +148,7 @@ export class DashboardComponent implements OnInit {
     formData.append('teamMembers', JSON.stringify(this.projectForm.selectedMembers));
 
     this.uploadedProjectFiles.forEach((file) => {
-      formData.append('uploadedImages', file);
+      formData.append('uploadedImages', file, file.name);
     });
 
     if (this.editingProjectId()) {
@@ -259,16 +259,23 @@ export class DashboardComponent implements OnInit {
     formData.append('socialLinks', JSON.stringify(socials));
 
     if (this.uploadedTeamFile) {
-      formData.append('uploadedImage', this.uploadedTeamFile);
+      formData.append('uploadedImage', this.uploadedTeamFile, this.uploadedTeamFile.name);
     }
 
     if (this.editingTeamMemberId()) {
       this.portfolioService.updateTeamMember(this.editingTeamMemberId()!, formData).subscribe({
-        next: () => {
+        next: (member) => {
+          if (this.uploadedTeamFile && !member.image) {
+            this.toastService.show(
+              'Saved but the photo was not stored. Check Cloudinary variables on Railway.',
+              'error',
+            );
+          } else {
+            this.toastService.show('Team member updated successfully!', 'success');
+          }
           this.showTeamModal.set(false);
           this.loadTeamMembers();
           this.loadStats();
-          this.toastService.show('Team member updated successfully!', 'success');
         },
         error: (err) => {
           console.error('Update team member failed', err);
@@ -278,11 +285,18 @@ export class DashboardComponent implements OnInit {
       });
     } else {
       this.portfolioService.createTeamMember(formData).subscribe({
-        next: () => {
+        next: (member) => {
+          if (this.uploadedTeamFile && !member.image) {
+            this.toastService.show(
+              'Member saved but the photo was not stored. Check Cloudinary variables on Railway.',
+              'error',
+            );
+          } else {
+            this.toastService.show('Team member added successfully!', 'success');
+          }
           this.showTeamModal.set(false);
           this.loadTeamMembers();
           this.loadStats();
-          this.toastService.show('Team member added successfully!', 'success');
         },
         error: (err) => {
           console.error('Create team member failed', err);
