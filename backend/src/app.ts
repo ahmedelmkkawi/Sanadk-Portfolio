@@ -10,12 +10,28 @@ export function createApp(): express.Application {
     process.env.FRONTEND_URLS || 'http://localhost:4200,http://localhost:4201'
   ).split(',');
 
-  app.use(
-    cors({
-      origin: allowedOrigins,
-      credentials: true,
-    }),
-  );
+  const corsOptions = {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      // Allow requests from configured origins
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      }
+      // Allow vercel.app subdomains
+      else if (origin.includes('.vercel.app')) {
+        callback(null, true);
+      }
+      // Allow localhost in development
+      else if (origin.includes('localhost')) {
+        callback(null, true);
+      }
+      else {
+        callback(null, false);
+      }
+    },
+    credentials: true,
+  };
+
+  app.use(cors(corsOptions));
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
