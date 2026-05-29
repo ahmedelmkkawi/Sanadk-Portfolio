@@ -17,8 +17,8 @@ function isOriginAllowed(origin: string): boolean {
   if (/^http:\/\/localhost(:\d+)?$/.test(origin)) {
     return true;
   }
-  // All Vercel production + preview deployment URLs
-  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) {
+  // All Vercel production + preview deployment URLs (*.vercel.app)
+  if (origin.startsWith('https://') && origin.endsWith('.vercel.app')) {
     return true;
   }
   return false;
