@@ -9,7 +9,9 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/auth`;
+  private get apiUrl(): string {
+    return `${environment.apiUrl}/auth`;
+  }
   private tokenSignal = signal<string | null>(localStorage.getItem('access_token'));
   public isLoggedIn = computed(() => !!this.tokenSignal());
 

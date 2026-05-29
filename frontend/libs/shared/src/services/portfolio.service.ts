@@ -8,7 +8,9 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class PortfolioService {
-  private baseUrl = environment.apiUrl;
+  private get baseUrl(): string {
+    return environment.apiUrl;
+  }
 
   constructor(private http: HttpClient) {}
 
