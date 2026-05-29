@@ -5,9 +5,11 @@ dotenv.config();
 import { createApp } from './app';
 import { connectDatabase } from './config/database';
 import { seedAdmin } from './services/auth.service';
+import { logCloudinaryStatus } from './services/cloudinary.service';
 
 async function bootstrap(): Promise<void> {
   await connectDatabase();
+  logCloudinaryStatus();
   await seedAdmin();
 
   const app = createApp();

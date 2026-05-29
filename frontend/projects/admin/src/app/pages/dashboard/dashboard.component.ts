@@ -161,7 +161,8 @@ export class DashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Update project failed', err);
-          this.toastService.show('Failed to update project.', 'error');
+          const msg = err?.error?.message || 'Failed to update project.';
+          this.toastService.show(msg, 'error');
         },
       });
     } else {
@@ -174,7 +175,8 @@ export class DashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Create project failed', err);
-          this.toastService.show('Failed to create project.', 'error');
+          const msg = err?.error?.message || 'Failed to create project.';
+          this.toastService.show(msg, 'error');
         },
       });
     }
@@ -270,7 +272,8 @@ export class DashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Update team member failed', err);
-          this.toastService.show('Failed to update team member.', 'error');
+          const msg = err?.error?.message || 'Failed to update team member.';
+          this.toastService.show(msg, 'error');
         },
       });
     } else {
@@ -283,7 +286,8 @@ export class DashboardComponent implements OnInit {
         },
         error: (err) => {
           console.error('Create team member failed', err);
-          this.toastService.show('Failed to add team member.', 'error');
+          const msg = err?.error?.message || 'Failed to add team member.';
+          this.toastService.show(msg, 'error');
         },
       });
     }

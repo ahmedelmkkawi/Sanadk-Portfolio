@@ -4,15 +4,20 @@ import { jwtAuth } from '../middleware/auth.middleware';
 import { asyncHandler } from '../utils/async-handler';
 import { parseArrayField, parseBooleanField } from '../utils/form-fields';
 import * as projectsService from '../services/projects.service';
+import { Project } from '../models/project.model';
 import { uploadImage } from '../services/cloudinary.service';
 import {
   CreateProjectInput,
   UpdateProjectInput,
 } from '../services/projects.service';
 import { routeParam } from '../utils/params';
+import { HttpError } from '../utils/http-error';
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
 
 function parseProjectBody(body: Record<string, unknown>): CreateProjectInput {
   return {
@@ -51,19 +56,31 @@ function parseUpdateProjectBody(body: Record<string, unknown>): UpdateProjectInp
 async function uploadProjectImages(
   files: Express.Multer.File[] | undefined,
 ): Promise<string[]> {
-  const imageUrls: string[] = [];
   if (!files?.length) {
-    return imageUrls;
+    return [];
   }
+
+  const imageUrls: string[] = [];
+  const errors: string[] = [];
 
   for (const file of files) {
     try {
       const uploadResult = await uploadImage(file);
       imageUrls.push(uploadResult.secure_url);
     } catch (err) {
-      console.error('Cloudinary upload failed for project image:', err);
+      const message = err instanceof Error ? err.message : String(err);
+      console.error('Project image upload failed:', message);
+      errors.push(message);
     }
   }
+
+  if (errors.length > 0 && imageUrls.length === 0) {
+    throw new HttpError(
+      502,
+      `Image upload failed: ${errors[0]}. Check Cloudinary env vars on Railway.`,
+    );
+  }
+
   return imageUrls;
 }
 
@@ -122,14 +139,17 @@ router.put(
   jwtAuth,
   upload.array('uploadedImages', 10),
   asyncHandler(async (req, res) => {
+    const id = routeParam(req.params.id);
     const dto = parseUpdateProjectBody(req.body);
     const uploadedUrls = await uploadProjectImages(
       req.files as Express.Multer.File[] | undefined,
     );
     if (uploadedUrls.length > 0) {
-      dto.images = [...(dto.images || []), ...uploadedUrls];
+      const existingProject = await Project.findById(id);
+      const keptImages = dto.images ?? existingProject?.images ?? [];
+      dto.images = [...keptImages, ...uploadedUrls];
     }
-    const project = await projectsService.updateProject(routeParam(req.params.id), dto);
+    const project = await projectsService.updateProject(id, dto);
     res.json(project);
   }),
 );

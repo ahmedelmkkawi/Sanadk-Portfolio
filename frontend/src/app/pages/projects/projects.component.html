@@ -53,10 +53,17 @@
       <!-- Image Thumbnail -->
       <div class="relative h-56 overflow-hidden bg-neutral-100 flex-shrink-0">
         <img
-          [src]="project.images[0] || 'https://picsum.photos/600/400?random=' + project.slug"
+          *ngIf="project.images[0]"
+          [src]="project.images[0]"
           [alt]="project.title"
           class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
+        <div
+          *ngIf="!project.images[0]"
+          class="w-full h-full flex items-center justify-center bg-neutral-800 text-neutral-400 text-sm"
+        >
+          No image
+        </div>
         <span class="absolute top-4 left-4 inline-block px-3 py-1 text-xs font-semibold tracking-wider text-accent uppercase bg-black/70 rounded-full border border-accent/30 backdrop-blur-md">
           {{ project.category }}
         </span>
@@ -87,11 +94,17 @@
             <div class="flex -space-x-2 overflow-hidden">
               <ng-container *ngFor="let member of $any(project.teamMembers) | slice:0:3">
                 <img
-                  [src]="$any(member).image || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'"
+                  *ngIf="$any(member).image"
+                  [src]="$any(member).image"
                   [alt]="$any(member).name"
                   [title]="$any(member).name"
                   class="inline-block h-8 w-8 rounded-full ring-2 ring-[#6f0f0f] object-cover"
                 />
+                <span
+                  *ngIf="!$any(member).image"
+                  class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-[10px] font-bold text-white ring-2 ring-[#6f0f0f]"
+                  [title]="$any(member).name"
+                >?</span>
               </ng-container>
               <div *ngIf="project.teamMembers.length > 3" class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white ring-2 ring-[#6f0f0f]">
                 +{{ project.teamMembers.length - 3 }}

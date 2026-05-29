@@ -109,7 +109,8 @@
         <div class="flex flex-col lg:flex-row justify-between gap-4">
           <div class="flex flex-col sm:flex-row gap-6 items-center">
             <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#C9A84C] bg-neutral-900 shadow-md">
-              <img [src]="member.image || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'" alt="{{ member.name }}" class="w-full h-full object-cover" />
+              <img *ngIf="member.image" [src]="member.image" alt="{{ member.name }}" class="w-full h-full object-cover" />
+              <div *ngIf="!member.image" class="w-full h-full flex items-center justify-center text-neutral-500 text-xs">No photo</div>
             </div>
             <div>
               <h3 class="text-2xl font-heading font-bold mb-1">{{ member.name }}</h3>

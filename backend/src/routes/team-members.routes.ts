@@ -11,9 +11,13 @@ import {
   UpdateTeamMemberInput,
 } from '../services/team-members.service';
 import { routeParam } from '../utils/params';
+import { HttpError } from '../utils/http-error';
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
 
 function parseTeamMemberBody(body: Record<string, unknown>): CreateTeamMemberInput {
   return {
@@ -71,7 +75,12 @@ router.post(
         const uploadResult = await uploadImage(file);
         dto.image = uploadResult.secure_url;
       } catch (err) {
-        console.error('Cloudinary upload failed for team member image:', err);
+        const message = err instanceof Error ? err.message : String(err);
+        console.error('Team member image upload failed:', message);
+        throw new HttpError(
+          502,
+          `Image upload failed: ${message}. Check Cloudinary env vars on Railway.`,
+        );
       }
     }
     const member = await teamMembersService.createTeamMember(dto);
@@ -91,7 +100,12 @@ router.put(
         const uploadResult = await uploadImage(file);
         dto.image = uploadResult.secure_url;
       } catch (err) {
-        console.error('Cloudinary upload failed for team member image (update):', err);
+        const message = err instanceof Error ? err.message : String(err);
+        console.error('Team member image upload failed (update):', message);
+        throw new HttpError(
+          502,
+          `Image upload failed: ${message}. Check Cloudinary env vars on Railway.`,
+        );
       }
     }
     const member = await teamMembersService.updateTeamMember(routeParam(req.params.id), dto);

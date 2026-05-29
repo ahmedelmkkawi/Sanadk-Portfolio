@@ -46,11 +46,9 @@
           />
         </ng-container>
         <ng-template #noImages>
-          <img
-            src="https://picsum.photos/1200/800?random={{ project()?.slug }}"
-            [alt]="project()?.title"
-            class="w-full h-full object-cover"
-          />
+          <div class="w-full h-full flex items-center justify-center bg-neutral-200 dark:bg-neutral-800 text-neutral-500">
+            No project images uploaded
+          </div>
         </ng-template>
 
         <button type="button" (click)="prevImage()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/60 transition-colors">
@@ -127,10 +125,15 @@
           <div class="space-y-4">
             <div *ngFor="let member of $any(project()?.teamMembers)" class="flex items-center gap-4">
               <img
-                [src]="$any(member).image || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'"
+                *ngIf="$any(member).image"
+                [src]="$any(member).image"
                 [alt]="$any(member).name"
                 class="w-12 h-12 rounded-full object-cover border border-neutral-200 dark:border-neutral-700"
               />
+              <span
+                *ngIf="!$any(member).image"
+                class="w-12 h-12 rounded-full flex items-center justify-center bg-neutral-200 dark:bg-neutral-800 text-neutral-500 text-xs border border-neutral-200 dark:border-neutral-700"
+              >?</span>
               <div>
                 <h4 class="font-heading font-bold text-neutral-900 dark:text-white">{{ $any(member).name }}</h4>
                 <p class="text-xs text-neutral-500">{{ $any(member).role }}</p>

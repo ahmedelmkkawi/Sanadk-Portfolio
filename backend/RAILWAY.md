@@ -18,7 +18,7 @@
 |----------|--------|
 | `MONGODB_URI` | رابط Atlas (يبدأ بـ `mongodb+srv://` — من غير `MONGODB_URI=` في القيمة) |
 | `JWT_SECRET` | سلسلة عشوائية طويلة |
-| `FRONTEND_URLS` | `https://sanadk-portfolio-ktd9.vercel.app,https://sanadk-portfolio-oeoz.vercel.app,http://localhost:4200,http://localhost:4201` |
+| `FRONTEND_URLS` | `https://sanadk-portfolio-public-git-main-ahmeds-projects-bab65924.vercel.app,https://sanadk-portfolio-admin-ahmeds-projects-bab65924.vercel.app,http://localhost:4200,http://localhost:4201` |
 | `CLOUDINARY_CLOUD_NAME` | من Cloudinary |
 | `CLOUDINARY_API_KEY` | من Cloudinary |
 | `CLOUDINARY_API_SECRET` | من Cloudinary |
@@ -57,3 +57,20 @@ apiUrl: 'https://YOUR-URL.up.railway.app/api',
 | `bad auth` | صحّح `MONGODB_URI` من Atlas Connect |
 | CORS من الفرونت | أضف روابط Vercel في `FRONTEND_URLS` |
 | 502 على Railway | شوف **Deployments** → **View Logs** |
+| الصور مش بتظهر / صور غريبة | تأكد من متغيرات Cloudinary على Railway (انظر أدناه) |
+
+## 7) Cloudinary — رفع الصور (مهم)
+
+بدون Cloudinary، الرفع على Railway **يفشل** والمشاريع/الأعضاء يُحفَظون **بدون صور**. الموقع كان يعرض صور placeholder عشوائية (picsum/unsplash) — تم إزالتها.
+
+1. من [cloudinary.com](https://cloudinary.com) → **Dashboard** → انسخ:
+   - **Cloud name**
+   - **API Key**
+   - **API Secret**
+2. في Railway → **Variables** أضف:
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+3. **Redeploy** مشروع Railway.
+4. في **Logs** بعد التشغيل يجب أن ترى: `Cloudinary configured (cloud: ...)`
+5. من لوحة الأدمن: **عدّل** كل مشروع/عضو و**ارفع الصور من جديد** (البيانات القديمة محفوظة بدون روابط صور).
