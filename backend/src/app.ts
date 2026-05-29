@@ -1,48 +1,12 @@
 import express from 'express';
-import cors from 'cors';
 import routes from './routes';
 import { errorHandler } from './middleware/error.middleware';
-
-function parseAllowedOrigins(): string[] {
-  return (process.env.FRONTEND_URLS || 'http://localhost:4200,http://localhost:4201')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-function isOriginAllowed(origin: string): boolean {
-  if (parseAllowedOrigins().includes(origin)) {
-    return true;
-  }
-  if (/^http:\/\/localhost(:\d+)?$/.test(origin)) {
-    return true;
-  }
-  // All Vercel production + preview deployment URLs (*.vercel.app)
-  if (origin.startsWith('https://') && origin.endsWith('.vercel.app')) {
-    return true;
-  }
-  return false;
-}
+import { corsMiddleware } from './middleware/cors.middleware';
 
 export function createApp(): express.Application {
   const app = express();
 
-  app.use(
-    cors({
-      origin(origin, callback) {
-        if (!origin) {
-          callback(null, true);
-          return;
-        }
-        if (isOriginAllowed(origin)) {
-          callback(null, origin);
-          return;
-        }
-        callback(new Error(`CORS blocked for origin: ${origin}`));
-      },
-      credentials: true,
-    }),
-  );
+  app.use(corsMiddleware);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
