@@ -7,29 +7,35 @@
 | الإعداد | القيمة |
 |---------|--------|
 | Root Directory | `frontend` |
-| Build Command | `npm run build:user` |
-| Output Directory | `dist/frontend/browser` |
-| Environment (اختياري) | `DEPLOY_TARGET=user` |
+| Build Command | من `vercel.json`: `node scripts/vercel-build.mjs` |
+| **Output Directory** | **`dist/frontend/browser`** ← Override في لوحة Vercel |
+| Environment (اختياري) | `DEPLOY_TARGET=user` أو اترك المتغير غير معرّف |
 
-يستخدم `vercel.json` في مجلد `frontend`.
+في Build logs لازم تشوف: `DEPLOY_TARGET=user` و `Building USER app`.
 
-## مشروع Admin (`sanadk-portfolio-ktd9`)
+## مشروع Admin (`sanadk-portfolio-ktd9`) — مهم جداً
+
+`vercel.json` يستخدم `node scripts/vercel-build.mjs` لكل المشاريع.
 
 | الإعداد | القيمة |
 |---------|--------|
 | Root Directory | `frontend` |
-| Build Command | `npm run build:admin` |
-| Output Directory | `dist/admin/browser` |
-| Environment | `DEPLOY_TARGET=admin` |
+| Build Command | *(من vercel.json)* `node scripts/vercel-build.mjs` — لا تغيّره لـ `build:user` |
+| **Output Directory** | **`dist/admin/browser`** ← Override في لوحة Vercel |
+| **Environment Variable** | **`DEPLOY_TARGET`** = **`admin`** ← بدونها يبني موقع اليوزر |
 
-**مهم:** لا تستخدم إعدادات الـ User على مشروع الأدمن.
+### خطوات ktd9 (بالترتيب)
 
-في Vercel → مشروع **ktd9** → **Settings** → **General**:
-
-1. **Build Command** → Override → `npm run build:admin`
-2. **Output Directory** → Override → `dist/admin/browser`
-3. **Environment Variables** → أضف `DEPLOY_TARGET` = `admin`
-4. **Redeploy**
+1. **Settings** → **Environment Variables** → Add:
+   - Name: `DEPLOY_TARGET`
+   - Value: `admin`
+   - Environments: Production + Preview
+2. **Settings** → **General** → **Output Directory** → **Override** → `dist/admin/browser`
+3. **Deployments** → **Redeploy** (مع Clear cache)
+4. في **Build logs** لازم تشوف:
+   - `DEPLOY_TARGET=admin`
+   - `Building ADMIN app`
+   - مش `build:user` ولا `home-component`
 
 مرجع: انسخ من `vercel.admin.json` إن احتجت.
 
