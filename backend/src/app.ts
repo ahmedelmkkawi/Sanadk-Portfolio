@@ -3,35 +3,46 @@ import cors from 'cors';
 import routes from './routes';
 import { errorHandler } from './middleware/error.middleware';
 
+function parseAllowedOrigins(): string[] {
+  return (process.env.FRONTEND_URLS || 'http://localhost:4200,http://localhost:4201')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function isOriginAllowed(origin: string): boolean {
+  if (parseAllowedOrigins().includes(origin)) {
+    return true;
+  }
+  if (/^http:\/\/localhost(:\d+)?$/.test(origin)) {
+    return true;
+  }
+  // All Vercel production + preview deployment URLs
+  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) {
+    return true;
+  }
+  return false;
+}
+
 export function createApp(): express.Application {
   const app = express();
 
-  const allowedOrigins = (
-    process.env.FRONTEND_URLS || 'http://localhost:4200,http://localhost:4201'
-  ).split(',');
-
-  const corsOptions = {
-    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      // Allow requests from configured origins
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      }
-      // Allow vercel.app subdomains
-      else if (origin.includes('.vercel.app')) {
-        callback(null, true);
-      }
-      // Allow localhost in development
-      else if (origin.includes('localhost')) {
-        callback(null, true);
-      }
-      else {
-        callback(null, false);
-      }
-    },
-    credentials: true,
-  };
-
-  app.use(cors(corsOptions));
+  app.use(
+    cors({
+      origin(origin, callback) {
+        if (!origin) {
+          callback(null, true);
+          return;
+        }
+        if (isOriginAllowed(origin)) {
+          callback(null, origin);
+          return;
+        }
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      },
+      credentials: true,
+    }),
+  );
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
